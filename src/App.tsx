@@ -76,6 +76,16 @@ const App = () => {
                 placeholder="Enter your image search string"
               />
             </>
+          ) : selectedButton === 3 ? (
+            <iframe
+              style={{
+                width: 1100,
+                height: 600,
+                borderStyle: "inherit",
+                padding: 24,
+              }}
+              src="https://app-backend-jsgfoz7rj5uvy.azurewebsites.net/"
+            ></iframe>
           ) : (
             <QuickActions setSelectedButton={setSelectedButton} />
           )}
