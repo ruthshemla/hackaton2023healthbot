@@ -98,9 +98,8 @@ const MicButton: React.FC<ButtonProps> = (props) => {
   );
 };
 const Stepper: React.FC<{
-  selectedButton: number;
   setSelectedButton: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ selectedButton, setSelectedButton }) => {
+}> = ({ setSelectedButton }) => {
   // 4 buttons which enable to route to different pages
   return (
     <div className="stepper">
