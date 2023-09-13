@@ -4,11 +4,16 @@ import {
   ButtonProps,
   Input,
   Title1,
-  ToggleButton,
+  CompoundButton,
 } from "@fluentui/react-components";
-import { Add12Filled, MicRegular } from "@fluentui/react-icons";
+import { MicRegular } from "@fluentui/react-icons";
 import centerBg from "./centerBg.png";
+import group from "./icons/group.png";
+import msgs from "./icons/msgs.png";
+import gallery from "./icons/gallery.png";
+import emails from "./icons/emails.png";
 import bgImage from "./bgImage.png";
+
 import "./App.css";
 
 const buttonStyles = {
@@ -72,41 +77,7 @@ const App = () => {
               />
             </>
           ) : (
-            <>
-              <ToggleButton
-                checked={selectedButton === 0}
-                onClick={() => {
-                  setSelectedButton(0);
-                  setDisplayBot(true);
-                }}
-                style={buttonStyles}
-                icon={<Add12Filled />}
-              />
-              <ToggleButton
-                style={buttonStyles}
-                onClick={() => {
-                  setSelectedButton(1);
-                }}
-                checked={selectedButton === 1}
-                icon={<Add12Filled />}
-              />
-              <ToggleButton
-                style={buttonStyles}
-                onClick={() => {
-                  setSelectedButton(2);
-                }}
-                checked={selectedButton === 2}
-                icon={<Add12Filled />}
-              />
-              <ToggleButton
-                style={buttonStyles}
-                onClick={() => {
-                  setSelectedButton(3);
-                }}
-                checked={selectedButton === 3}
-                icon={<Add12Filled />}
-              />
-            </>
+            <QuickActions setSelectedButton={setSelectedButton} />
           )}
         </div>
       </div>
@@ -134,33 +105,61 @@ const Stepper: React.FC<{
   return (
     <div className="stepper">
       <Button
+        icon={<img width={20} src={emails} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(0)}
-        appearance={selectedButton === 0 ? "primary" : "secondary"}
-      >
-        1
-      </Button>
+      />
       <Button
+        icon={<img width={20} src={gallery} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(1)}
-        appearance={selectedButton === 1 ? "primary" : "secondary"}
-      >
-        2
-      </Button>
+      />
       <Button
+        icon={<img width={20} src={msgs} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(2)}
-        appearance={selectedButton === 2 ? "primary" : "secondary"}
-      >
-        3
-      </Button>
+      />
       <Button
+        icon={<img width={20} src={group} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(3)}
-        appearance={selectedButton === 3 ? "primary" : "secondary"}
-      >
-        4
-      </Button>
+      />
     </div>
+  );
+};
+const QuickActions: React.FC<{
+  setSelectedButton: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ setSelectedButton }) => {
+  return (
+    <>
+      <CompoundButton
+        onClick={() => {
+          setSelectedButton(0);
+        }}
+        style={buttonStyles}
+        icon={<img src={emails} alt="d" />}
+      />
+      <CompoundButton
+        style={buttonStyles}
+        onClick={() => {
+          setSelectedButton(1);
+        }}
+        icon={<img src={gallery} alt="d" />}
+      />
+      <CompoundButton
+        style={buttonStyles}
+        onClick={() => {
+          setSelectedButton(2);
+        }}
+        icon={<img src={msgs} alt="d" />}
+      />
+      <CompoundButton
+        style={buttonStyles}
+        onClick={() => {
+          setSelectedButton(3);
+        }}
+        icon={<img src={group} alt="d" />}
+      />
+    </>
   );
 };
