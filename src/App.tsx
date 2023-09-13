@@ -33,6 +33,60 @@ const stepperBtnStyles = {
   borderRadius: 8,
 };
 
+const ChatBot: React.FC = () => {
+  return (
+    <iframe
+      style={{
+        width: 1100,
+        height: 600,
+        borderStyle: "inherit",
+        padding: 24,
+      }}
+      src="https://app-backend-jsgfoz7rj5uvy.azurewebsites.net/"
+    ></iframe>
+  );
+};
+const ImagesBot: React.FC = () => {
+  const [searchString, setSearchString] = React.useState("");
+  const [response, setResponse] = React.useState(null);
+
+  const handleSubmit = async (_requestData: string) => {
+    try {
+      const url =
+        "https://amigpt-imagegen.eastus2.inference.ml.azure.com/score";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer shhUI7E1xsUD5mKDw3OZ2cIu6iB6vLaq",
+        },
+        body: JSON.stringify({
+          question: "I want an ice cream on a sunny day",
+          chat_history: "[]",
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      // setResponse(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  return (
+    <>
+      <Input
+        contentAfter={<MicButton aria-label="Enter by voice" />}
+        style={{ width: 400, height: 40 }}
+        placeholder="Enter your image search string"
+        onChange={(e) => setSearchString(e.target.value)}
+      />
+      <Button appearance="primary" onClick={() => handleSubmit(searchString)}>
+        Search
+      </Button>
+    </>
+  );
+};
 const App = () => {
   const [selectedButton, setSelectedButton] = React.useState(0);
   return (
@@ -69,23 +123,9 @@ const App = () => {
               src="https://healthcare-bot-3hr56khbhfp6u.azurewebsites.net"
             ></iframe>
           ) : selectedButton === 2 ? (
-            <>
-              <Input
-                contentAfter={<MicButton aria-label="Enter by voice" />}
-                style={{ width: 400, height: 40 }}
-                placeholder="Enter your image search string"
-              />
-            </>
+            <ImagesBot />
           ) : selectedButton === 3 ? (
-            <iframe
-              style={{
-                width: 1100,
-                height: 600,
-                borderStyle: "inherit",
-                padding: 24,
-              }}
-              src="https://app-backend-jsgfoz7rj5uvy.azurewebsites.net/"
-            ></iframe>
+            <ChatBot />
           ) : (
             <QuickActions setSelectedButton={setSelectedButton} />
           )}
