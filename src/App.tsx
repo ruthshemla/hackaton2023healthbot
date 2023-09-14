@@ -48,43 +48,71 @@ const ChatBot: React.FC = () => {
 };
 const ImagesBot: React.FC = () => {
   const [searchString, setSearchString] = React.useState("");
-  const [response, setResponse] = React.useState(null);
+  const [response, setResponse] = React.useState<string>();
 
-  const handleSubmit = async (_requestData: string) => {
+  const handleSubmit = async (requestString: string) => {
     try {
-      const url =
-        "https://amigpt-imagegen.eastus2.inference.ml.azure.com/score";
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer shhUI7E1xsUD5mKDw3OZ2cIu6iB6vLaq",
-        },
-        body: JSON.stringify({
-          question: "I want an ice cream on a sunny day",
-          chat_history: "[]",
-        }),
+      const requestData = {
+        question: requestString,
+        chat_history: "[]",
+      };
+
+      // Define request headers
+      const headers = new Headers({
+        "Content-Type": "application/json",
+        Authorization: "Bearer shhUI7E1xsUD5mKDw3OZ2cIu6iB6vLaq",
       });
-      const data = await response.json();
-      console.log(data);
-      // setResponse(data);
+
+      // Define the request URL
+      const url =
+        "https://corsproxy.io/?https://amigpt-imagegen.eastus2.inference.ml.azure.com/score";
+
+      // Make the POST request
+      fetch(url, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(requestData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle the response data (in this case, the image data)
+          console.log(data);
+          setResponse(data.answer);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     } catch (error) {
-      console.error("Error:", error);
+      console.log(error);
     }
   };
 
   return (
-    <>
-      <Input
-        contentAfter={<MicButton aria-label="Enter by voice" />}
-        style={{ width: 400, height: 40 }}
-        placeholder="Enter your image search string"
-        onChange={(e) => setSearchString(e.target.value)}
-      />
-      <Button appearance="primary" onClick={() => handleSubmit(searchString)}>
-        Search
-      </Button>
-    </>
+    <div>
+      <div className="inputForm">
+        <Input
+          contentAfter={<MicButton aria-label="Enter by voice" />}
+          style={{ width: 400, height: 40 }}
+          placeholder="Enter your image search string"
+          onChange={(e) => setSearchString(e.target.value)}
+        />
+        <Button
+          appearance="primary"
+          onClick={() =>
+            handleSubmit(
+              searchString.length
+                ? searchString
+                : "I want an ice cream on a sunny day"
+            )
+          }
+        >
+          Search
+        </Button>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <img src={response} alt="d" width={300} />
+      </div>
+    </div>
   );
 };
 const App = () => {
@@ -98,10 +126,7 @@ const App = () => {
         width="100"
         height="100"
       />
-      <Stepper
-        selectedButton={selectedButton}
-        setSelectedButton={setSelectedButton}
-      />
+      <Stepper setSelectedButton={setSelectedButton} />
       <img src={centerBg} className="centerBgLogo" alt="center maccabi Logo" />
       <div className="rectangle">
         <Title1>Hi, Shoshana what will we do today?</Title1>
