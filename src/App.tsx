@@ -151,7 +151,7 @@ const EmailsBot = () => {
           </Subtitle2>
         </div>
       ) : (
-        "Error"
+        response && response.status === "Error" && "Error"
       )}
     </div>
   );
