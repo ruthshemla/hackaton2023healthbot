@@ -82,7 +82,9 @@ const EmailsBot = () => {
           appearance="primary"
           onClick={() => {
             emailRequest(
-              emailString.length ? emailString ?? "let me daughter know that llm is awesome"
+              emailString.length
+                ? emailString
+                : "let me daughter know that llm is awesome"
             );
             setIsLoading(true);
           }}
