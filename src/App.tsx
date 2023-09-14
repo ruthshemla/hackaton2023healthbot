@@ -39,7 +39,8 @@ const stepperBtnStyles = {
 const EmailsBot = () => {
   const [emailString, setEmailString] = React.useState("");
   const [response, setResponse] = React.useState<
-    { title?: string; content: string } | undefined
+    | { title?: string; content: string; status?: "Success" | "Error" }
+    | undefined
   >();
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -71,6 +72,7 @@ const EmailsBot = () => {
           setResponse({
             content: data.answer.content.plainText,
             title: data.answer.content.subject,
+            status: "Success",
           });
         } else {
           setResponse({ content: JSON.stringify(data.answer) });
@@ -78,6 +80,7 @@ const EmailsBot = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
+        setResponse({ content: JSON.stringify(error), status: "Error" });
       })
       .finally(() => setIsLoading(false));
   };
@@ -114,38 +117,39 @@ const EmailsBot = () => {
 
       {isLoading ? (
         <Spinner />
-      ) : (
-        response && (
-          <div
+      ) : response && response.status === "Error" ? (
+        "Error"
+      ) : response && response.status !== "Error" ? (
+        <div
+          style={{
+            backgroundColor: "#FDFDFD",
+            marginTop: 20,
+            padding: 16,
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: 8,
+            justifyContent: "center",
+            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+            width: 700,
+          }}
+        >
+          <Subtitle1
+            style={{ display: "flex", justifyContent: "center", padding: 30 }}
+          >
+            {response?.title}
+          </Subtitle1>
+
+          <Subtitle2
             style={{
-              marginTop: 8,
-              padding: 16,
               display: "flex",
-              flexDirection: "column",
-              borderRadius: 8,
               justifyContent: "center",
-              boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-              width: 700,
+              textAlign: "center",
             }}
           >
-            <Subtitle1
-              style={{ display: "flex", justifyContent: "center", padding: 30 }}
-            >
-              {response?.title}
-            </Subtitle1>
-
-            <Subtitle2
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-            >
-              {response?.content}
-            </Subtitle2>
-          </div>
-        )
-      )}
+            {response?.content}
+          </Subtitle2>
+        </div>
+      ) : null}
     </div>
   );
 };
