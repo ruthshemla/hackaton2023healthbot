@@ -75,7 +75,10 @@ const EmailsBot = () => {
             status: "Success",
           });
         } else {
-          setResponse({ content: JSON.stringify(data.answer) });
+          setResponse({
+            content: JSON.stringify(data.answer),
+            status: "Success",
+          });
         }
       })
       .catch((error) => {
@@ -117,8 +120,6 @@ const EmailsBot = () => {
 
       {isLoading ? (
         <Spinner />
-      ) : response && response.status === "Error" ? (
-        "Error"
       ) : response && response.status !== "Error" ? (
         <div
           style={{
@@ -149,7 +150,9 @@ const EmailsBot = () => {
             {response?.content}
           </Subtitle2>
         </div>
-      ) : null}
+      ) : (
+        "Error"
+      )}
     </div>
   );
 };
