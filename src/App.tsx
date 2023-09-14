@@ -7,7 +7,7 @@ import {
   CompoundButton,
   Spinner,
 } from "@fluentui/react-components";
-import { MicRegular } from "@fluentui/react-icons";
+import { Home48Regular, MicRegular } from "@fluentui/react-icons";
 import centerBg from "./centerBg.png";
 import group from "./icons/group.png";
 import msgs from "./icons/msgs.png";
@@ -254,7 +254,7 @@ const Stepper: React.FC<{
   return (
     <div className="stepper">
       <Button
-        icon={<img width={20} src={emails} alt="d" />}
+        icon={<Home48Regular />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(0)}
       />
@@ -274,7 +274,7 @@ const Stepper: React.FC<{
         onClick={() => setSelectedButton(3)}
       />
       <Button
-        icon={<img width={20} src={group} alt="d" />}
+        icon={<img width={20} src={emails} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(4)}
       />
@@ -291,7 +291,7 @@ const QuickActions: React.FC<{
           setSelectedButton(0);
         }}
         style={buttonStyles}
-        icon={<img src={emails} alt="d" />}
+        icon={<Home48Regular />}
       />
       <CompoundButton
         style={buttonStyles}
@@ -319,7 +319,7 @@ const QuickActions: React.FC<{
         onClick={() => {
           setSelectedButton(4);
         }}
-        icon={<img src={group} alt="d" />}
+        icon={<img src={emails} alt="d" />}
       />
     </>
   );
