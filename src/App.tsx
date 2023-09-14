@@ -34,6 +34,67 @@ const stepperBtnStyles = {
   borderRadius: 8,
 };
 
+const EmailsBot = () => {
+  const [emailString, setEmailString] = React.useState("");
+  const [response, setResponse] = React.useState<string>();
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const emailRequest = async (requestString: string) => {
+    const requestData = {
+      question: requestString,
+      chat_history: "[]",
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer F1rC3IibCP681YQu5S7LsASj0u1SxWWZ",
+    };
+
+    const url =
+      "https://corsproxy.io/?https://amigpt-mailer.eastus2.inference.ml.azure.com/score";
+
+    fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response data here
+        console.log(data);
+        setResponse(data.answer.status);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => setIsLoading(false));
+  };
+  return (
+    <div>
+      <div className="inputForm">
+        <Input
+          contentAfter={<MicButton aria-label="Enter by voice" />}
+          style={{ width: 400, height: 40 }}
+          placeholder="Enter your email request"
+          onChange={(e) => setEmailString(e.target.value)}
+        />
+        <Button
+          appearance="primary"
+          onClick={() => {
+            emailRequest(
+              emailString.length ? emailString ?? "let me daughter know that llm is awesome"
+            );
+            setIsLoading(true);
+          }}
+        >
+          Send
+        </Button>
+      </div>
+      {isLoading ? <Spinner /> : response}
+    </div>
+  );
+};
+
 const ChatBot: React.FC = () => {
   return (
     <iframe
@@ -118,7 +179,7 @@ const ImagesBot: React.FC = () => {
       ) : (
         response && (
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <img src={response} alt="d" width={300} />
+            <img src={response} alt="d" width={500} />
           </div>
         )
       )}
@@ -161,6 +222,8 @@ const App = () => {
             <ImagesBot />
           ) : selectedButton === 3 ? (
             <ChatBot />
+          ) : selectedButton === 4 ? (
+            <EmailsBot />
           ) : (
             <QuickActions setSelectedButton={setSelectedButton} />
           )}
@@ -208,6 +271,11 @@ const Stepper: React.FC<{
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(3)}
       />
+      <Button
+        icon={<img width={20} src={group} alt="d" />}
+        style={stepperBtnStyles}
+        onClick={() => setSelectedButton(4)}
+      />
     </div>
   );
 };
@@ -241,6 +309,13 @@ const QuickActions: React.FC<{
         style={buttonStyles}
         onClick={() => {
           setSelectedButton(3);
+        }}
+        icon={<img src={group} alt="d" />}
+      />
+      <CompoundButton
+        style={buttonStyles}
+        onClick={() => {
+          setSelectedButton(4);
         }}
         icon={<img src={group} alt="d" />}
       />
