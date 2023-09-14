@@ -109,9 +109,11 @@ const ImagesBot: React.FC = () => {
           Search
         </Button>
       </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <img src={response} alt="d" width={300} />
-      </div>
+      {response && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src={response} alt="d" width={300} />
+        </div>
+      )}
     </div>
   );
 };
