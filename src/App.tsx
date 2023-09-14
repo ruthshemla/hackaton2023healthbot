@@ -6,6 +6,7 @@ import {
   Title1,
   CompoundButton,
   Spinner,
+  Subtitle1,
 } from "@fluentui/react-components";
 import { Home48Regular, MicRegular } from "@fluentui/react-icons";
 import centerBg from "./centerBg.png";
@@ -40,6 +41,7 @@ const EmailsBot = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const emailRequest = async (requestString: string) => {
+    console.log(requestString);
     const requestData = {
       question: requestString,
       chat_history: "[]",
@@ -62,7 +64,11 @@ const EmailsBot = () => {
       .then((data) => {
         // Handle the response data here
         console.log(data);
-        setResponse(data.answer.status);
+        if (data.answer.content.plainText) {
+          setResponse(data.answer.content.plainText);
+        } else {
+          setResponse(JSON.stringify(data.answer));
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -92,7 +98,11 @@ const EmailsBot = () => {
           Send
         </Button>
       </div>
-      {isLoading ? <Spinner /> : response}
+      <Subtitle1
+        style={{ display: "flex", justifyContent: "center", padding: 30 }}
+      >
+        {isLoading ? <Spinner /> : response}
+      </Subtitle1>
     </div>
   );
 };
