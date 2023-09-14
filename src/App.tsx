@@ -5,6 +5,7 @@ import {
   Input,
   Title1,
   CompoundButton,
+  Spinner,
 } from "@fluentui/react-components";
 import { MicRegular } from "@fluentui/react-icons";
 import centerBg from "./centerBg.png";
@@ -49,6 +50,7 @@ const ChatBot: React.FC = () => {
 const ImagesBot: React.FC = () => {
   const [searchString, setSearchString] = React.useState("");
   const [response, setResponse] = React.useState<string>();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = async (requestString: string) => {
     try {
@@ -81,7 +83,8 @@ const ImagesBot: React.FC = () => {
         })
         .catch((error) => {
           console.error("Error:", error);
-        });
+        })
+        .finally(() => setIsLoading(false));
     } catch (error) {
       console.log(error);
     }
@@ -98,21 +101,26 @@ const ImagesBot: React.FC = () => {
         />
         <Button
           appearance="primary"
-          onClick={() =>
+          onClick={() => {
             handleSubmit(
               searchString.length
                 ? searchString
                 : "I want an ice cream on a sunny day"
-            )
-          }
+            );
+            setIsLoading(true);
+          }}
         >
           Search
         </Button>
       </div>
-      {response && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img src={response} alt="d" width={300} />
-        </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        response && (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <img src={response} alt="d" width={300} />
+          </div>
+        )
       )}
     </div>
   );
