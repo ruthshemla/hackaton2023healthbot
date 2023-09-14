@@ -7,6 +7,7 @@ import {
   CompoundButton,
   Spinner,
   Subtitle1,
+  Subtitle2,
 } from "@fluentui/react-components";
 import { Home48Regular, MicRegular } from "@fluentui/react-icons";
 import centerBg from "./centerBg.png";
@@ -37,7 +38,9 @@ const stepperBtnStyles = {
 
 const EmailsBot = () => {
   const [emailString, setEmailString] = React.useState("");
-  const [response, setResponse] = React.useState<string>();
+  const [response, setResponse] = React.useState<
+    { title?: string; content: string } | undefined
+  >();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const emailRequest = async (requestString: string) => {
@@ -64,10 +67,13 @@ const EmailsBot = () => {
       .then((data) => {
         // Handle the response data here
         console.log(data);
-        if (data.answer.content.plainText) {
-          setResponse(data.answer.content.plainText);
+        if (data.answer.content.plainText && data.answer.content.subject) {
+          setResponse({
+            content: data.answer.content.plainText,
+            title: data.answer.content.subject,
+          });
         } else {
-          setResponse(JSON.stringify(data.answer));
+          setResponse({ content: JSON.stringify(data.answer) });
         }
       })
       .catch((error) => {
@@ -76,7 +82,14 @@ const EmailsBot = () => {
       .finally(() => setIsLoading(false));
   };
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        margin: "auto",
+      }}
+    >
       <div className="inputForm">
         <Input
           contentAfter={<MicButton aria-label="Enter by voice" />}
@@ -98,11 +111,41 @@ const EmailsBot = () => {
           Send
         </Button>
       </div>
-      <Subtitle1
-        style={{ display: "flex", justifyContent: "center", padding: 30 }}
-      >
-        {isLoading ? <Spinner /> : response}
-      </Subtitle1>
+
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        response && (
+          <div
+            style={{
+              marginTop: 8,
+              padding: 16,
+              display: "flex",
+              flexDirection: "column",
+              border: "1px solid blue",
+              borderRadius: 8,
+              justifyContent: "center",
+              width: 700,
+            }}
+          >
+            <Subtitle1
+              style={{ display: "flex", justifyContent: "center", padding: 30 }}
+            >
+              {response?.title}
+            </Subtitle1>
+
+            <Subtitle2
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              {response?.content}
+            </Subtitle2>
+          </div>
+        )
+      )}
     </div>
   );
 };
