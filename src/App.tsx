@@ -202,30 +202,60 @@ const App = () => {
       <Stepper setSelectedButton={setSelectedButton} />
       <img src={centerBg} className="centerBgLogo" alt="center maccabi Logo" />
       <div className="rectangle">
-        <Title1>Hi, Shoshana what will we do today?</Title1>
+        {selectedButton === 0 && (
+          <Title1>Hi, Shoshana what will we do today?</Title1>
+        )}
         <div
           style={{
             width: "100%",
             display: "flex",
             justifyContent: "space-around",
+            flexDirection: selectedButton === 0 ? "row" : "column",
           }}
         >
           {selectedButton === 1 ? (
-            <iframe
-              style={{
-                width: 1100,
-                height: 600,
-                borderStyle: "inherit",
-                padding: 24,
-              }}
-              src="https://healthcare-bot-3hr56khbhfp6u.azurewebsites.net"
-            ></iframe>
+            <>
+              <Title1
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Health bot
+              </Title1>
+              <iframe
+                style={{
+                  width: 1100,
+                  height: 600,
+                  borderStyle: "inherit",
+                  padding: 24,
+                }}
+                src="https://healthcare-bot-3hr56khbhfp6u.azurewebsites.net"
+              ></iframe>
+            </>
           ) : selectedButton === 2 ? (
-            <ImagesBot />
+            <>
+              <Title1
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Image bot
+              </Title1>
+              <ImagesBot />
+            </>
           ) : selectedButton === 3 ? (
             <ChatBot />
           ) : selectedButton === 4 ? (
-            <EmailsBot />
+            <>
+              <Title1
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Email bot
+              </Title1>
+              <EmailsBot />
+            </>
           ) : (
             <QuickActions setSelectedButton={setSelectedButton} />
           )}
@@ -259,17 +289,17 @@ const Stepper: React.FC<{
         onClick={() => setSelectedButton(0)}
       />
       <Button
-        icon={<img width={20} src={gallery} alt="d" />}
+        icon={<img width={20} src={group} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(1)}
       />
       <Button
-        icon={<img width={20} src={msgs} alt="d" />}
+        icon={<img width={20} src={gallery} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(2)}
       />
       <Button
-        icon={<img width={20} src={group} alt="d" />}
+        icon={<img width={20} src={msgs} alt="d" />}
         style={stepperBtnStyles}
         onClick={() => setSelectedButton(3)}
       />
@@ -298,21 +328,21 @@ const QuickActions: React.FC<{
         onClick={() => {
           setSelectedButton(1);
         }}
-        icon={<img src={gallery} alt="d" />}
+        icon={<img src={group} alt="d" />}
       />
       <CompoundButton
         style={buttonStyles}
         onClick={() => {
           setSelectedButton(2);
         }}
-        icon={<img src={msgs} alt="d" />}
+        icon={<img src={gallery} alt="d" />}
       />
       <CompoundButton
         style={buttonStyles}
         onClick={() => {
           setSelectedButton(3);
         }}
-        icon={<img src={group} alt="d" />}
+        icon={<img src={msgs} alt="d" />}
       />
       <CompoundButton
         style={buttonStyles}
